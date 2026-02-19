@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "Projekt_actions",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "89b0a805-8bb9-44de-ba40-9057809c94d5",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "38be5da2-d4f0-437e-aaa3-d5bd1967d2b9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9adf8d06-2417-4b78-be9c-6a512ec1fec1",
+                    "path": "<XRController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

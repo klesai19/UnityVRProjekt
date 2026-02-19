@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
             gameOverPanelOrText.SetActive(true);
         UpdateUI();
         UpdateTimerUI();
+        GameManagerEndedHook.RaiseRoundEnded(Score);
     }
     public void AddScore(int amount)
     {
