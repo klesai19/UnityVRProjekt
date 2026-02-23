@@ -29,6 +29,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "New action map",
+            "id": "fd209289-9d44-4ebb-8e73-03077ced3915",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "bd726d70-2ef2-4e59-940f-2ac4e7790a60",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleReset",
+                    "type": "Button",
+                    "id": "44e6f1e1-8a06-47bd-be89-ccaf40cfd6d8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fa7ace63-b616-434f-b061-9656fd041dcc",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93a39616-f659-416f-88ed-9c4a175a6afb",
+                    "path": "<XRController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleReset",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
