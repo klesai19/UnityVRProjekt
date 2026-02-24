@@ -28,6 +28,10 @@ public class WormTarget : MonoBehaviour
         if (upOffset < minUpOffsetToBeHittable) return;
         cooldownTimer = hitCooldown;
         WormHitEvents.Raise(points);
+        if (TryGetComponent<WormController>(out var controller))
+        {
+            controller.OnHit();
+        }
         if (SoundManager.Instance!=null)
         {
            SoundManager.Instance.PlayWormHit(); 
