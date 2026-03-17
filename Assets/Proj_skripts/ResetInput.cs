@@ -20,6 +20,7 @@ public class ResetInput : MonoBehaviour
 
     private void OnToggle(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Button clicked");
         resetManager.ToggleResetPanel();
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,7 +12,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text stateText;
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text timerText;
-    [SerializeField] private GameObject gameOverPanelOrText; 
+    [SerializeField] private GameObject gameOverPanelOrText;
+    [SerializeField] private GameObject tempPanel;
+    
+    [SerializeField] private InputActionReference toggleMenuAction;
+    
+    
+    [Header("Positioning of Main Camera (XR Origin)")] 
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private float distanceInFront = 1.5f;
+    [SerializeField] private float heightOffset = 0.5f;
+    [SerializeField] private float rightOffset = 0.5f;
+
+    private Canvas panelCanvas;
+
     public GameState State { get; private set; } = GameState.Idle;
     public int Score { get; private set; }
     private float timer;
@@ -24,7 +38,22 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetState(GameState.Idle);
+
+        if (tempPanel != null)
+        {
+            CanvasGroup cg = tempPanel.GetComponent<CanvasGroup>();
+            if (cg == null)
+                cg = tempPanel.AddComponent<CanvasGroup>();
+
+            // hide menu at start
+            cg.alpha = 0f;
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
+        }
+        
+        panelCanvas = tempPanel.GetComponentInChildren<Canvas>(true);
     }
+    
     private void Update()
     {
         if (State != GameState.Running) return;
@@ -35,6 +64,33 @@ public class GameManager : MonoBehaviour
             timer = 0f;
             EndRound();
         }
+        
+        if (tempPanel != null && panelCanvas.enabled)
+        {
+            UpdatePanelPosition();
+        }
+    }
+    
+    private void UpdatePanelPosition()
+    {
+        Vector3 forward = playerTransform.forward;
+        forward.y = 0f;
+        forward.Normalize();
+
+        Vector3 right = playerTransform.right;
+        right.y = 0f;
+        right.Normalize();
+
+        Vector3 targetPos = playerTransform.position
+                            + forward * distanceInFront
+                            + right * rightOffset;
+
+        targetPos.y = playerTransform.position.y + heightOffset;
+
+        tempPanel.transform.position = targetPos;
+
+        Vector3 euler = playerTransform.eulerAngles;
+        tempPanel.transform.rotation = Quaternion.Euler(0f, euler.y, 0f);
     }
     public void StartRound()
     {
@@ -92,15 +148,48 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         WormHitEvents.OnWormHit += HandleWormHit;
+        if (toggleMenuAction != null)
+        {
+            toggleMenuAction.action.Enable();
+            toggleMenuAction.action.performed += OnToggle;
+        }
     }
     private void OnDisable()
     {
         WormHitEvents.OnWormHit -= HandleWormHit;
+        if (toggleMenuAction != null)
+        {
+            toggleMenuAction.action.performed -= OnToggle;
+            toggleMenuAction.action.Disable();
+        }
     }
 
     private void HandleWormHit(int points)
     {
         AddScore(points);
     }
+    
+    private void OnToggle(InputAction.CallbackContext ctx)
+    {
+        if (tempPanel != null)
+            ToggleTempPanel();
+    }
+    
+    public void ToggleTempPanel()
+    {
+        if (tempPanel == null) return;
+
+        CanvasGroup cg = tempPanel.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = tempPanel.AddComponent<CanvasGroup>();
+
+        bool visible = cg.alpha > 0.5f;
+
+        cg.alpha = visible ? 0f : 1f;
+        cg.interactable = !visible;
+        cg.blocksRaycasts = !visible;
+    }
+    
+    
 }
  
